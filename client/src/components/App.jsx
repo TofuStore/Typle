@@ -4,6 +4,18 @@ import Keyboard from './Keyboard.jsx';
 import InputRow from './InputRow.jsx';
 import styled from 'styled-components';
 import axios from 'axios';
+import Modal from 'react-modal';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
 const Background = styled.div`
   width: 100%;
@@ -24,6 +36,17 @@ const Header = styled.h1`
   margin: 0px;
   padding: 20px 20px;
   font-family: Georgia, sans-serif;
+`;
+
+const ModalMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  margin: 0px;
+  padding: 20px 20px;
+  font-family: Georgia, sans-serif;
+  font-size: 2.5em;
 `;
 
 const Timer = styled.div`
@@ -56,7 +79,9 @@ class App extends React.Component {
       newWord: '',
       time: {},
       seconds: 30,
-      points: 0
+      points: 0,
+      isOpen: false,
+      win: false
     }
 
     this.timer = 0;
@@ -64,6 +89,7 @@ class App extends React.Component {
     this.countDown = this.countDown.bind(this);
     this.updateInput = this.updateInput.bind(this);
     this.addPoints = this.addPoints.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   componentDidMount() {
@@ -75,6 +101,13 @@ class App extends React.Component {
     })
     let timeLeftVar = this.secondsToTime(this.state.seconds);
     this.setState({ time: timeLeftVar });
+  }
+
+  toggleModal() {
+    let toggle = !this.state.isOpen;
+    this.setState({
+      isOpen: toggle
+    })
   }
 
   addPoints(points) {
@@ -100,6 +133,7 @@ class App extends React.Component {
 
     // Check if we're at zero.
     if (seconds == 0) {
+      this.toggleModal();
       clearInterval(this.timer);
     }
   }
@@ -125,6 +159,13 @@ class App extends React.Component {
     this.startTimer();
     if (event.key === 'Enter') {
       if (this.state.input.length === 5) {
+        if (this.state.input === this.state.answer) {
+          this.setState({
+            win: true
+          })
+          this.toggleModal();
+          clearInterval(this.timer);
+        }
         let letters = [];
         for (let i = 0; i < this.state.input.length; i++) {
           letters.push(this.state.input.charAt(i));
@@ -177,11 +218,19 @@ class App extends React.Component {
 
     let start = this.state.words.length - 5 >= 0 ? this.state.words.length - 5 : 0;
 
+    let message = this.state.win ? 'Success!' : 'Failed';
+
     return(
       <div tabIndex='0' onKeyDown={this.updateInput}>
         <Header>
           Typele
         </Header>
+        <Modal isOpen={this.state.isOpen} style={customStyles}>
+          <button onClick={this.toggleModal}>close</button>
+          <ModalMessage>
+            {message}
+          </ModalMessage>
+        </Modal>
         <Timer>
           {/* <button onClick={this.startTimer}>Start</button> */}
           {this.state.time.s}s
