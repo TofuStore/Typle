@@ -4,10 +4,7 @@ import BoxRow from './BoxRow.jsx';
 class BoxArea extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      words: ['theee', 'crrte', 'notes', 'green']
-    }
-
+    this.state = {}
   }
 
   render() {
@@ -15,7 +12,7 @@ class BoxArea extends React.Component {
       <>
         {this.props.words.map((word) => {
           return (
-            <BoxRow word={word} answer={this.props.answer}/>
+            <BoxRow word={word} answer={this.props.answer} addPoints={this.props.addPoints}/>
           )
         })}
       </>

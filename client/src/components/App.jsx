@@ -1,5 +1,6 @@
 import React from 'react'
 import BoxArea from './BoxArea.jsx';
+import Keyboard from './Keyboard.jsx';
 import InputRow from './InputRow.jsx';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -37,6 +38,12 @@ const Timer = styled.div`
   font-size: 2.5em;
 `;
 
+const KeyboardPosition = styled.div`
+  position: fixed;
+  bottom: 50px;
+  width: 100%;
+`;
+
 
 class App extends React.Component {
   constructor(props) {
@@ -47,13 +54,15 @@ class App extends React.Component {
       input: '',
       newWord: '',
       time: {},
-      seconds: 30
+      seconds: 30,
+      points: 0
     }
 
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
     this.updateInput = this.updateInput.bind(this);
+    this.addPoints = this.addPoints.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +74,13 @@ class App extends React.Component {
     })
     let timeLeftVar = this.secondsToTime(this.state.seconds);
     this.setState({ time: timeLeftVar });
+  }
+
+  addPoints(points) {
+    let newPoints = this.state.points + points;
+    this.setState({
+      points: newPoints,
+    })
   }
 
   startTimer() {
@@ -163,8 +179,11 @@ class App extends React.Component {
           {this.state.time.s}s
         </Timer>
         <Background>
-          <BoxArea key={this.state.words} words={this.state.words.slice(start, this.state.words.length)} answer={this.state.answer} />
+          <BoxArea key={this.state.words} words={this.state.words.slice(start, this.state.words.length)} answer={this.state.answer} addPoints={this.addPoints}/>
           <InputRow word={word}/>
+          <KeyboardPosition>
+            <Keyboard />
+          </KeyboardPosition>
         </Background>
       </div>
     )

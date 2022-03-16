@@ -31,12 +31,14 @@ class BoxRow extends React.Component {
   render() {
     let wordChar = this.props.word.split('');
     let answer = this.props.answer.slice();
-
+    let count = 0;
 
     for(let i = 0; i < wordChar.length; i++) {
       if (wordChar[i] === answer.charAt(i)) {
         wordChar[i] = [wordChar[i], 'green'];
         answer = this.spliceSlice(answer, i, 1, ' ');
+        //this.props.addPoints(500);
+        count++;
       }
     }
 
@@ -45,11 +47,16 @@ class BoxRow extends React.Component {
         if (answer.includes(wordChar[i])) {
           wordChar[i] = [wordChar[i], 'yellow'];
           answer = this.spliceSlice(answer, i, 1, ' ');
+          //this.props.addPoints(200);
         } else {
           wordChar[i] = [wordChar[i], 'DarkGray'];
         }
       }
     }
+
+    // if (count === 5) {
+    //   this.props.addPoints(2000);
+    // }
 
     return(
       <Row>
