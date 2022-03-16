@@ -18,9 +18,7 @@ const Rectangle = styled.div`
 class Key extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      letter: 'F'
-    }
+    this.state = {}
   }
 
   render() {

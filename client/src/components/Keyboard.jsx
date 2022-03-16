@@ -14,9 +14,9 @@ class Keyboard extends React.Component {
   render() {
     return(
       <>
-        <KeyboardRow keys={this.state.top} />
-        <KeyboardRow keys={this.state.middle} />
-        <KeyboardRow keys={this.state.bottom} />
+        <KeyboardRow keys={this.state.top} answer={this.props.answer} letters={this.props.letters}/>
+        <KeyboardRow keys={this.state.middle} answer={this.props.answer} letters={this.props.letters}/>
+        <KeyboardRow keys={this.state.bottom} answer={this.props.answer} letters={this.props.letters}/>
       </>
     )
   }

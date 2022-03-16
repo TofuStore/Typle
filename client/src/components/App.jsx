@@ -50,6 +50,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       words: [],
+      letters: [],
       answer: 'placeholder',
       input: '',
       newWord: '',
@@ -124,6 +125,11 @@ class App extends React.Component {
     this.startTimer();
     if (event.key === 'Enter') {
       if (this.state.input.length === 5) {
+        let letters = [];
+        for (let i = 0; i < this.state.input.length; i++) {
+          letters.push(this.state.input.charAt(i));
+        }
+        letters = this.state.letters.concat(letters);
         axios.get('/api/check', {
           params: {
             word: this.state.input
@@ -134,8 +140,10 @@ class App extends React.Component {
             if (!newWords.includes(this.state.input)) {
               newWords.push(this.state.input);
             }
+
             this.setState({
               words: newWords,
+              letters: letters,
               input: '',
             })
           } else {
@@ -182,7 +190,7 @@ class App extends React.Component {
           <BoxArea key={this.state.words} words={this.state.words.slice(start, this.state.words.length)} answer={this.state.answer} addPoints={this.addPoints}/>
           <InputRow word={word}/>
           <KeyboardPosition>
-            <Keyboard />
+            <Keyboard answer={this.state.answer} letters={this.state.letters}/>
           </KeyboardPosition>
         </Background>
       </div>

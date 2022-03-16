@@ -18,12 +18,30 @@ class KeyboardRow extends React.Component {
 
   render() {
 
+    let keys = this.props.keys.slice();
+    let answer = this.props.answer.slice();
+    let letters = this.props.letters.slice();
+
+    for (let i = 0; i < keys.length; i++) {
+      if (letters.includes(keys[i])) {
+        if (answer.includes(keys[i])) {
+          keys[i] = [keys[i], 'Green'];
+        } else {
+          keys[i] = [keys[i], 'Gray'];
+        }
+      } else {
+        keys[i] = [keys[i], 'DarkGray'];
+      }
+    }
+
+
+
     return(
       <Row>
         {
-          this.props.keys.map((letter) => {
+          keys.map((letter) => {
             return (
-              <Key letter={letter}/>
+              <Key letter={letter[0]} color={letter[1]}/>
             )
           })
         }
