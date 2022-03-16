@@ -9,7 +9,6 @@ const Square = styled.div`
   height: 75px;
   color: black;
   font-size: 2em;
-  border: 2px solid gray;
   margin: 5px;
   background-color: ${props => props.color || 'DarkGray'};
   font-family: Georgia, sans-serif;

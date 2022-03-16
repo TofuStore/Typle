@@ -5,14 +5,15 @@ class BoxArea extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      words: ['theee', 'crate', 'notes']
+      words: ['theee', 'crrte', 'notes', 'green']
     }
+
   }
 
   render() {
     return(
       <>
-        {this.state.words.map((word) => {
+        {this.props.words.map((word) => {
           return (
             <BoxRow word={word} answer={this.props.answer}/>
           )
