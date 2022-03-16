@@ -1,7 +1,6 @@
 import React from 'react'
 import BoxArea from './BoxArea.jsx';
 import InputRow from './InputRow.jsx';
-import Timer from './Timer.jsx';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -26,6 +25,18 @@ const Header = styled.h1`
   font-family: Georgia, sans-serif;
 `;
 
+const Timer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  margin: 0px;
+  padding: 20px 20px;
+  font-family: Georgia, sans-serif;
+  font-size: 2.5em;
+`;
+
 
 class App extends React.Component {
   constructor(props) {
@@ -35,8 +46,13 @@ class App extends React.Component {
       answer: 'placeholder',
       input: '',
       newWord: '',
+      time: {},
+      seconds: 30
     }
 
+    this.timer = 0;
+    this.startTimer = this.startTimer.bind(this);
+    this.countDown = this.countDown.bind(this);
     this.updateInput = this.updateInput.bind(this);
   }
 
@@ -47,9 +63,49 @@ class App extends React.Component {
         answer: results.data.word.toLowerCase(),
       })
     })
+    let timeLeftVar = this.secondsToTime(this.state.seconds);
+    this.setState({ time: timeLeftVar });
+  }
+
+  startTimer() {
+    if (this.timer == 0 && this.state.seconds > 0) {
+      this.timer = setInterval(this.countDown, 1000);
+    }
+  }
+
+  countDown() {
+    // Remove one second, set state so a re-render happens.
+    let seconds = this.state.seconds - 1;
+    this.setState({
+      time: this.secondsToTime(seconds),
+      seconds: seconds,
+    });
+
+    // Check if we're at zero.
+    if (seconds == 0) {
+      clearInterval(this.timer);
+    }
+  }
+
+  secondsToTime(secs){
+    let hours = Math.floor(secs / (60 * 60));
+
+    let divisor_for_minutes = secs % (60 * 60);
+    let minutes = Math.floor(divisor_for_minutes / 60);
+
+    let divisor_for_seconds = divisor_for_minutes % 60;
+    let seconds = Math.ceil(divisor_for_seconds);
+
+    let obj = {
+      "h": hours,
+      "m": minutes,
+      "s": seconds
+    };
+    return obj;
   }
 
   updateInput(event) {
+    this.startTimer();
     if (event.key === 'Enter') {
       if (this.state.input.length === 5) {
         axios.get('/api/check', {
@@ -102,7 +158,10 @@ class App extends React.Component {
         <Header>
           Typele
         </Header>
-        <Timer />
+        <Timer>
+          {/* <button onClick={this.startTimer}>Start</button> */}
+          {this.state.time.s}s
+        </Timer>
         <Background>
           <BoxArea key={this.state.words} words={this.state.words.slice(start, this.state.words.length)} answer={this.state.answer} />
           <InputRow word={word}/>
