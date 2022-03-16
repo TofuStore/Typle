@@ -40,7 +40,7 @@ const Timer = styled.div`
 
 const KeyboardPosition = styled.div`
   position: fixed;
-  bottom: 50px;
+  bottom: 10px;
   width: 100%;
 `;
 

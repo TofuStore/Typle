@@ -5,8 +5,8 @@ const Rectangle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
-  height: 40px;
+  width: 50px;
+  height: 70px;
   border-radius: 3px;
   color: black;
   font-size: 1em;
