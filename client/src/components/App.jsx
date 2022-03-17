@@ -78,7 +78,7 @@ class App extends React.Component {
       input: '',
       newWord: '',
       time: {},
-      seconds: 30,
+      seconds: 5,
       points: 0,
       isOpen: false,
       win: false
@@ -182,10 +182,13 @@ class App extends React.Component {
               newWords.push(this.state.input);
             }
 
+           let addfive = this.state.seconds + 5;
+
             this.setState({
               words: newWords,
               letters: letters,
               input: '',
+              seconds: addfive,
             })
           } else {
             this.setState({

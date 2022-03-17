@@ -8,6 +8,13 @@ const Row = styled.div`
   align-items: center;
 `;
 
+const Error = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+`;
+
 class InputRow extends React.Component {
   constructor(props) {
     super(props);
